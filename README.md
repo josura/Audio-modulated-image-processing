@@ -14,3 +14,13 @@ python -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
 ```
+
+# Run image fading with audio modulation and default parameters
+```bash
+python main.py --image <image_path>
+```
+
+# Run image fading + distortion with audio modulation and default parameters
+```bash
+python main-withDistortion.py --image <image_path>
+```
