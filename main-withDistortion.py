@@ -306,6 +306,7 @@ def main():
     t0 = time.time()
     grids_cache = {}
 
+    show_overlay = args.overlay_info
     try:
         while True:
             t = time.time() - t0
@@ -320,7 +321,7 @@ def main():
 
             frame = cv2.addWeighted(distorted, amp, black, 1.0 - amp, 0.0)
             # adding HUD overlay
-            if args.overlay_info:
+            if show_overlay:
                 hud = frame.copy()
                 bar_w = int((w - 40) * amp)
                 cv2.rectangle(hud, (20, h - 40), (20 + bar_w, h - 20), (255, 255, 255), thickness=-1)
@@ -340,6 +341,8 @@ def main():
             key = cv2.waitKey(1) & 0xFF
             if key in (27, ord('q'), ord('Q')):
                 break
+            elif key in (ord('h'), ord('H')):
+                show_overlay = not show_overlay
 
             dt = time.time() - (t0 + t)
             if dt < frame_interval:
