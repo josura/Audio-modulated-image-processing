@@ -24,7 +24,7 @@ class EnvelopeFollower:
     New parameters:
       - db_offset (dB): shift measured level before mapping
       - db_scale  (scale):  scale measured level in dB before mapping (expand/compress)
-      - gamma     (\gamma):  nonlinear curve on 0..1 output (post mapping)
+      - gamma     (gamma):  nonlinear curve on 0..1 output (post mapping)
       - gate_db   (dB): hard gate; below this, output=0
     """
     def __init__(self, sr: float,
@@ -250,8 +250,8 @@ def main():
     parser.add_argument("--release", type=float, default=0.00001, help="Envelope release time (s)")
     parser.add_argument("--low", type=float, default=-55.0, help="Threshold low (dBFS)")
     parser.add_argument("--high", type=float, default=-12.0, help="Threshold high (dBFS)")
-    parser.add_argument("--db-offset", type=float, default=0.0, help="Add this many dB before mapping (positive = louder)")
-    parser.add_argument("--db-scale", type=float, default=0.8, help="Scale measured dB before mapping ( >1 more sensitive, <1 less)")
+    parser.add_argument("--db-offset", type=float, default=-13.0, help="Add this many dB before mapping (positive = louder)")
+    parser.add_argument("--db-scale", type=float, default=1.0, help="Scale measured dB before mapping ( >1 more sensitive, <1 less)")
     parser.add_argument("--gamma", type=float, default=1.0, help="Apply output^gamma curve to 0..1 envelope")
     parser.add_argument("--gate-db", type=float, default=None, help="Hard gate in dBFS; below this, envelope = 0")
     # Spectral splits and smoothing
@@ -266,8 +266,14 @@ def main():
     parser.add_argument("--gate-for-fade", action="store_true", help="Also gate the fade when below --dist-gate")
     # UI
     parser.add_argument("--fps", type=float, default=60.0, help="Target display FPS")
-    parser.add_argument("--width", type=int, default=960, help="Window width in pixels")
-    parser.add_argument("--height", type=int, default=540, help="Window height in pixels")
+    parser.add_argument("--width", type=int, default=1920, help="Window width in pixels")
+    parser.add_argument("--height", type=int, default=1080, help="Window height in pixels")
+    parser.add_argument(
+        "--overlay-info",
+        default=True,
+        action=argparse.BooleanOptionalAction,   # supports --overlay-info / --no-overlay-info
+        help="Show on-screen HUD (amp + band meters). Use --no-overlay-info to hide."
+    )
     
     args = parser.parse_args()
 
