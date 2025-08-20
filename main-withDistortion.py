@@ -319,13 +319,22 @@ def main():
             )
 
             frame = cv2.addWeighted(distorted, amp, black, 1.0 - amp, 0.0)
-
-            hud = frame.copy()
-            bar_w = int((w - 40) * amp)
-            cv2.rectangle(hud, (20, h - 40), (20 + bar_w, h - 20), (255, 255, 255), thickness=-1)
-            cv2.putText(hud, f"amp={amp:.2f} low={bands[0]:.2f} mid={bands[1]:.2f} high={bands[2]:.2f}",
-                        (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 1, cv2.LINE_AA)
-            frame = cv2.addWeighted(hud, 0.35, frame, 0.65, 0)
+            # adding HUD overlay
+            if args.overlay_info:
+                hud = frame.copy()
+                bar_w = int((w - 40) * amp)
+                cv2.rectangle(hud, (20, h - 40), (20 + bar_w, h - 20), (255, 255, 255), thickness=-1)
+                cv2.putText(
+                    hud,
+                    f"amp={amp:.2f} low={bands[0]:.2f} mid={bands[1]:.2f} high={bands[2]:.2f}",
+                    (20, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.6,
+                    (255, 255, 255),
+                    1,
+                    cv2.LINE_AA
+                )
+                frame = cv2.addWeighted(hud, 0.35, frame, 0.65, 0)
 
             cv2.imshow("Audio‑Modulated FX", frame)
             key = cv2.waitKey(1) & 0xFF
