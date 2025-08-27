@@ -276,6 +276,7 @@ def main():
     )
     parser.add_argument(
         "--no-ui-controls",
+        default=False,
         action="store_true",
         help="Disable HighGUI controls (no zoom/pan/save UI). Uses AUTOSIZE window."
     )
@@ -303,9 +304,17 @@ def main():
 
     black = np.zeros_like(img)
 
+    win_name = "Audio‑Modulated FX"
+
     app.start()
-    cv2.namedWindow("Audio‑Modulated FX", cv2.WINDOW_NORMAL)
-    cv2.resizeWindow("Audio‑Modulated FX", w, h)
+    if args.no_ui_controls:
+        # No interactive UI: no zoom/pan/save toolbar. Window size = frame size.
+        cv2.namedWindow(win_name, cv2.WINDOW_AUTOSIZE | cv2.WINDOW_GUI_NORMAL)
+        # Do NOT call cv2.resizeWindow in this mode.
+    else:
+        # Normal resizable window without extra toolbar
+        cv2.namedWindow(win_name, cv2.WINDOW_NORMAL)
+        cv2.resizeWindow(win_name, w, h)
 
     frame_interval = 1.0 / max(1.0, args.fps)
     t0 = time.time()
