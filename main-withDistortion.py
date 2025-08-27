@@ -305,6 +305,9 @@ def main():
     black = np.zeros_like(img)
 
     win_name = "Audio‑Modulated FX"
+    is_fullscreen = False
+    prev_rect = None  # (x, y, w, h) to restore when leaving fullscreen
+
 
     app.start()
     if args.no_ui_controls:
@@ -357,6 +360,36 @@ def main():
                 break
             elif key in (ord('h'), ord('H')):
                 show_overlay = not show_overlay
+            # else:
+            #     print ('you press %s', chr(key))
+
+            # F11; also allow 'f' as a fallback
+            if key in (ord('È'), ord('f'), ord('F')):  # È == F11 on my computer it seems
+                try:
+                    if not is_fullscreen:
+                        # Save current rect to restore later
+                        try:
+                            x, y, ww, hh = cv2.getWindowImageRect(win_name)  # OpenCV >= 4.5
+                            prev_rect = (x, y, ww, hh)
+                        except Exception:
+                            prev_rect = None
+
+                        cv2.setWindowProperty(win_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                        is_fullscreen = True
+                    else:
+                        cv2.setWindowProperty(win_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_NORMAL)
+                        is_fullscreen = False
+                        # Restore size/position if we have it and we're in WINDOW_NORMAL mode
+                        if prev_rect is not None and not args.no_ui_controls:
+                            x, y, ww, hh = prev_rect
+                            try:
+                                cv2.resizeWindow(win_name, ww, hh)
+                                cv2.moveWindow(win_name, x, y)
+                            except Exception:
+                                pass
+                except Exception:
+                    # If the backend doesn’t support fullscreen, just ignore
+                    pass
 
             dt = time.time() - (t0 + t)
             if dt < frame_interval:
