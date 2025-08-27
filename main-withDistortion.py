@@ -274,6 +274,11 @@ def main():
         action=argparse.BooleanOptionalAction,   # supports --overlay-info / --no-overlay-info
         help="Show on-screen HUD (amp + band meters). Use --no-overlay-info to hide."
     )
+    parser.add_argument(
+        "--no-ui-controls",
+        action="store_true",
+        help="Disable HighGUI controls (no zoom/pan/save UI). Uses AUTOSIZE window."
+    )
     
     args = parser.parse_args()
 
