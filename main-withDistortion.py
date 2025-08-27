@@ -250,7 +250,7 @@ def main():
     parser.add_argument("--release", type=float, default=0.00001, help="Envelope release time (s)")
     parser.add_argument("--low", type=float, default=-55.0, help="Threshold low (dBFS)")
     parser.add_argument("--high", type=float, default=-12.0, help="Threshold high (dBFS)")
-    parser.add_argument("--db-offset", type=float, default=-13.0, help="Add this many dB before mapping (positive = louder)")
+    parser.add_argument("--db-offset", type=float, default=-5.0, help="Add this many dB before mapping (positive = louder)")
     parser.add_argument("--db-scale", type=float, default=1.0, help="Scale measured dB before mapping ( >1 more sensitive, <1 less)")
     parser.add_argument("--gamma", type=float, default=1.0, help="Apply output^gamma curve to 0..1 envelope")
     parser.add_argument("--gate-db", type=float, default=None, help="Hard gate in dBFS; below this, envelope = 0")
